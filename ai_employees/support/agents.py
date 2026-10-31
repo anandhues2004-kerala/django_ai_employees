@@ -3,7 +3,7 @@
 from support.models import Conversation,Message,AgentLog
 from.gemini_client import Anthropic
 from django.conf import settings
-from.tools import get_order_details,get_refund_history,check_delivery_status
+from.tools import get_order_details,get_refund_history,check_delivery_status, get_customer_risk_profile
 # initialize Antropic Client
 client=Anthropic(api_key=settings.GEMINI_API_KEY)
 # model 
@@ -61,6 +61,32 @@ Response format:
 Decision: [APPROVE_REFUND / DENY_REFUND / ESCALATE_TO_RISK]
 Reason: [Specific reason based on verified facts]
 Evidence: [Relevant order details and refund history]
+"""
+
+RISK_SYSTEM_PROMPT="""
+You are a fraud risk analyst at CoolBreeze AC.
+A support manager has sent you a customer profile for risk assessment.
+
+Your job:
+- Analyse the customer's order and refund patterns
+- Identify suspicious behaviour
+- Return a clear risk verdict
+
+Risk levels:
+- LOW — genuine customer, normal behaviour
+- MEDIUM — some suspicious signals, proceed with caution
+- HIGH — clear fraud pattern, recommend denial
+
+Your response format:
+- Risk Level: LOW / MEDIUM / HIGH
+- Key Signals: what you found suspicious or genuine
+- Recommendation: what manager should do
+
+Important:
+- Be objective — base verdict on data only
+- One bad refund does not make someone fraudulent
+- Look for patterns — not isolated incidents
+
 """
 
 #SUPPORT TOOLS-->Tools schemas ,that ai agent will read
@@ -131,6 +157,40 @@ SUPPORT_TOOLS=[
 
 ]
 
+MANAGER_TOOLS = [
+    {
+        "name": "assess_fraud_risk",
+        "description": "Consult the risk agent to assess fraud risk for a customer. Use this when refund request looks suspicious or customer has multiple refund requests. Pass the user_id to get a risk verdict.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "user_id": {
+                    "type": "integer",
+                    "description": "The user ID to assess fraud risk for"
+                }
+            },
+            "required": ["user_id"]
+        }
+    }
+]
+
+RISK_TOOLS = [
+    {
+        "name": "get_customer_risk_profile",
+        "description": "Get complete risk profile for a customer including order history, refund patterns and ratio. Use this to assess fraud risk.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "user_id": {
+                    "type": "integer",
+                    "description": "The user ID to assess risk for"
+                }
+            },
+            "required": ["user_id"]
+        }
+    }
+]
+
 
 #execute_tool-->Bridge between Gemini and python functions(tools)
 
@@ -145,10 +205,16 @@ def execute_tool(tool_name,tool_input):
         case_summary=tool_input["case_summary"]
         decision=run_manager_agent(case_summary)
         return decision
+    if tool_name=='assess_fraud_risk':
+        user_id=tool_input['user_id']
+        print("Consulating risk agent for user==>",user_id)
+        verdict=run_risk_agent(user_id)
+        print("risk verdict==>",verdict)
+        return verdict
+    if tool_name==' get_customer_risk_profile':
+        return get_customer_risk_profile(tool_input['user_id'])
 
-
-
-    
+        
 def run_support_agent(user_message, conversation_id, order_id, user_id):
     conv = Conversation.objects.get(id=conversation_id)
 
@@ -226,8 +292,9 @@ def run_manager_agent(case_summary):
             model=antropic_model,
             max_tokens=1024,
             system=MANAGER_SYSTEM_PROMPT,
+            tools=MANAGER_TOOLS,
             messages=manager_messages,
-             tools=SUPPORT_TOOLS
+             
 
         )
         if response.stop_reason=='tool_use':
@@ -253,6 +320,47 @@ def run_manager_agent(case_summary):
             })   
         else:
             return response.content[0].text
+
+def run_risk_agent(user_id):
+    risk_messages=[
+        {"role":"user","content":f"please assess the fraud risk for user ID {user_id}.User your tool to get their profile"}
+    ]  
+    while True:
+        response=client.messages.create(
+            model=antropic_model,
+            max_tokens=1024,
+            system=RISK_SYSTEM_PROMPT,
+            tools=RISK_TOOLS,
+            messages=risk_messages
+
+        ) 
+
+        print("risk stop_reason===>",response.stop_reason)  
+        if response.stop_reason=='tool_use': 
+            tool_result=[]
+            for block in response.content:
+                if block.type == "tool_use":
+                    print("risk tool call ==>",block.name) #means tool name
+                    print("risk tool input ===>",block.input) 
+                    result = execute_tool(block.name,block.input)#execute tool take this
+                    print('risk tool result==>',result)
+                    tool_result.append({
+                        "type":"tool_result",
+                         "tool_use_id":block.id,
+                         "content":str(result)
+                })
+                risk_messages.append({
+                    "role":"assistant",
+                     "content":response.content
+
+        })  
+                risk_messages.append({
+                    "role":"user",
+                    "content":tool_result
+        }) 
+        else:
+            return response.content[0].text             
+
                
 
         
