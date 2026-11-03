@@ -12,7 +12,7 @@ antropic_model=settings.GEMINI_MODEL
 #SUPPORT SYSTEM PROMPT--> Vikram job description
 
 SUPPORT_SYSTEM_PROMPT="""
-You are Vikram,a customer support agent at MyG AC.
+You are Vikram,a customer support agent at Sports Hub.
 You help Customers with issues realated to their AC order
 
 Your resposnsibilities:
@@ -263,6 +263,7 @@ def run_support_agent(user_message, conversation_id, order_id, user_id):
                     result = execute_tool(block.name, block.input)
 
                     #store data
+
 
                     tool_results.append({
                         "type": "tool_result",

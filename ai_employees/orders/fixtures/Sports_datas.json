@@ -75,10 +75,10 @@
     "model": "orders.product",
     "pk": 1,
     "fields": {
-      "name": "CoolBreeze 1 Ton 3 Star Window AC",
-      "description": "Energy efficient 1 ton window AC with 3 star rating, auto restart, sleep mode and dust filter. Ideal for rooms up to 120 sq ft.",
-      "price": "28999.00",
-      "category": "Window AC",
+      "name": "ProRun Lightweight Running Shoes",
+      "description": "Lightweight running shoes with breathable mesh upper, cushioned sole and durable grip for daily training.",
+      "price": "2499.00",
+      "category": "Footwear",
       "in_stock": true
     }
   },
@@ -86,10 +86,10 @@
     "model": "orders.product",
     "pk": 2,
     "fields": {
-      "name": "CoolBreeze 1.5 Ton 3 Star Split AC",
-      "description": "1.5 ton split AC with 3 star rating, turbo cool technology, auto clean and dehumidifier function. Ideal for rooms up to 180 sq ft.",
-      "price": "34999.00",
-      "category": "Split AC",
+      "name": "StrikePro Football",
+      "description": "Durable size 5 football with a textured outer surface and reinforced bladder for training and match play.",
+      "price": "1299.00",
+      "category": "Football",
       "in_stock": true
     }
   },
@@ -97,10 +97,10 @@
     "model": "orders.product",
     "pk": 3,
     "fields": {
-      "name": "CoolBreeze 1.5 Ton 5 Star Inverter Split AC",
-      "description": "Premium 1.5 ton inverter split AC with 5 star rating, wifi control, auto diagnosis and 4 way swing. Ideal for rooms up to 180 sq ft.",
-      "price": "42999.00",
-      "category": "Split AC",
+      "name": "PowerDrive English Willow Cricket Bat",
+      "description": "Premium English willow cricket bat with a balanced pickup, thick edges and comfortable grip for competitive play.",
+      "price": "5499.00",
+      "category": "Cricket",
       "in_stock": true
     }
   },
@@ -108,10 +108,10 @@
     "model": "orders.product",
     "pk": 4,
     "fields": {
-      "name": "CoolBreeze 2 Ton 3 Star Split AC",
-      "description": "Heavy duty 2 ton split AC with 3 star rating, rapid cooling, self cleaning filter and auto restart after power cut. Ideal for rooms up to 240 sq ft.",
-      "price": "45999.00",
-      "category": "Split AC",
+      "name": "ActiveFit Sports Jersey",
+      "description": "Quick-dry sports jersey made with breathable fabric for comfortable practice sessions and matches.",
+      "price": "899.00",
+      "category": "Sportswear",
       "in_stock": true
     }
   },
@@ -119,10 +119,10 @@
     "model": "orders.product",
     "pk": 5,
     "fields": {
-      "name": "CoolBreeze 1 Ton 5 Star Inverter Split AC",
-      "description": "Compact 1 ton inverter split AC with 5 star rating, voice control, pm 2.5 filter and weekly timer. Ideal for rooms up to 120 sq ft.",
-      "price": "38999.00",
-      "category": "Split AC",
+      "name": "AeroFlex Badminton Racket",
+      "description": "Lightweight badminton racket with a graphite frame, balanced flexibility and a comfortable non-slip handle.",
+      "price": "2199.00",
+      "category": "Badminton",
       "in_stock": true
     }
   },
@@ -130,10 +130,10 @@
     "model": "orders.product",
     "pk": 6,
     "fields": {
-      "name": "CoolBreeze 2 Ton 5 Star Inverter Cassette AC",
-      "description": "Commercial grade 2 ton cassette AC with 5 star inverter rating, 360 degree airflow, central drain pump and remote diagnostics. Ideal for offices up to 300 sq ft.",
-      "price": "68999.00",
-      "category": "Cassette AC",
+      "name": "JumpMax Basketball",
+      "description": "Textured rubber basketball with reliable grip and bounce for indoor and outdoor games.",
+      "price": "1599.00",
+      "category": "Basketball",
       "in_stock": true
     }
   },
@@ -141,10 +141,10 @@
     "model": "orders.product",
     "pk": 7,
     "fields": {
-      "name": "CoolBreeze 1.5 Ton Portable AC",
-      "description": "No installation required portable AC with 1.5 ton capacity, dual fan speed, dehumidifier mode and 24 hour timer. Ideal for temporary cooling needs.",
-      "price": "32999.00",
-      "category": "Portable AC",
+      "name": "CourtPro Volleyball",
+      "description": "Soft-touch volleyball with a durable outer cover, suitable for training and recreational matches.",
+      "price": "999.00",
+      "category": "Volleyball",
       "in_stock": true
     }
   },
@@ -152,10 +152,10 @@
     "model": "orders.product",
     "pk": 8,
     "fields": {
-      "name": "CoolBreeze 2 Ton Tower AC",
-      "description": "Floor standing 2 ton tower AC with inverter technology, 7 speed fan, air purifier with HEPA filter and child lock. Ideal for large halls up to 280 sq ft.",
-      "price": "55999.00",
-      "category": "Tower AC",
+      "name": "FitStrong Adjustable Dumbbell Set",
+      "description": "Compact adjustable dumbbell set for strength training at home, with secure plates and non-slip handles.",
+      "price": "3499.00",
+      "category": "Fitness Equipment",
       "in_stock": true
     }
   },
@@ -163,9 +163,9 @@
     "model": "orders.product",
     "pk": 9,
     "fields": {
-      "name": "CoolBreeze AC Voltage Stabilizer 5KVA",
-      "description": "Heavy duty voltage stabilizer for ACs up to 2 ton. Protects against voltage fluctuations between 90V to 290V with time delay and digital display.",
-      "price": "4999.00",
+      "name": "DryFit Sports Socks - 3 Pair Pack",
+      "description": "Three pairs of moisture-wicking sports socks with cushioned support for running, training and everyday use.",
+      "price": "399.00",
       "category": "Accessories",
       "in_stock": true
     }
@@ -174,9 +174,9 @@
     "model": "orders.product",
     "pk": 10,
     "fields": {
-      "name": "CoolBreeze Universal AC Remote Control",
-      "description": "Universal remote compatible with all CoolBreeze AC models. Features LCD display, timer, sleep mode and turbo button. Includes 2 AAA batteries.",
-      "price": "899.00",
+      "name": "HydroSport Stainless Steel Water Bottle",
+      "description": "Reusable stainless steel sports bottle with a leak-resistant lid, designed for workouts and outdoor activities.",
+      "price": "699.00",
       "category": "Accessories",
       "in_stock": true
     }
@@ -187,14 +187,14 @@
     "fields": {
       "user": 2,
       "product": 3,
-      "product_name": "CoolBreeze 1.5 Ton 5 Star Inverter Split AC",
-      "amount": "42999.00",
+      "product_name": "PowerDrive English Willow Cricket Bat",
+      "amount": "5499.00",
       "status": "dispatched",
       "carrier": "BlueDart",
       "tracking_number": "BD99281733",
       "delivery": "14, Residency Road, Shivajinagar, Bangalore - 560025",
-      "created_at": "2025-04-26T10:30:00Z",
-      "updated_at": "2025-04-26T10:30:00Z"
+      "created_at": "2026-10-25T10:30:00Z",
+      "updated_at": "2026-10-25T10:30:00Z"
     }
   },
   {
@@ -203,14 +203,14 @@
     "fields": {
       "user": 2,
       "product": 2,
-      "product_name": "CoolBreeze 1.5 Ton 3 Star Split AC",
-      "amount": "34999.00",
+      "product_name": "StrikePro Football",
+      "amount": "1299.00",
       "status": "delivered",
       "carrier": "Delhivery",
       "tracking_number": "DL44729103",
       "delivery": "14, Residency Road, Shivajinagar, Bangalore - 560025",
-      "created_at": "2025-03-11T14:00:00Z",
-      "updated_at": "2025-03-11T14:00:00Z"
+      "created_at": "2026-09-09T14:00:00Z",
+      "updated_at": "2026-09-09T14:00:00Z"
     }
   },
   {
@@ -219,14 +219,14 @@
     "fields": {
       "user": 2,
       "product": 9,
-      "product_name": "CoolBreeze AC Voltage Stabilizer 5KVA",
-      "amount": "4999.00",
+      "product_name": "DryFit Sports Socks - 3 Pair Pack",
+      "amount": "399.00",
       "status": "delivered",
       "carrier": "Delhivery",
       "tracking_number": "DL88103742",
       "delivery": "14, Residency Road, Shivajinagar, Bangalore - 560025",
-      "created_at": "2025-02-16T09:15:00Z",
-      "updated_at": "2025-02-16T09:15:00Z"
+      "created_at": "2026-08-17T09:15:00Z",
+      "updated_at": "2026-08-17T09:15:00Z"
     }
   },
   {
@@ -235,14 +235,14 @@
     "fields": {
       "user": 2,
       "product": 10,
-      "product_name": "CoolBreeze Universal AC Remote Control",
-      "amount": "899.00",
+      "product_name": "HydroSport Stainless Steel Water Bottle",
+      "amount": "699.00",
       "status": "cancelled",
       "carrier": "",
       "tracking_number": "",
       "delivery": "14, Residency Road, Shivajinagar, Bangalore - 560025",
-      "created_at": "2025-04-28T16:45:00Z",
-      "updated_at": "2025-04-28T16:45:00Z"
+      "created_at": "2026-10-27T16:45:00Z",
+      "updated_at": "2026-10-27T16:45:00Z"
     }
   },
   {
@@ -251,14 +251,14 @@
     "fields": {
       "user": 2,
       "product": 5,
-      "product_name": "CoolBreeze 1 Ton 5 Star Inverter Split AC",
-      "amount": "38999.00",
+      "product_name": "AeroFlex Badminton Racket",
+      "amount": "2199.00",
       "status": "pending",
       "carrier": "",
       "tracking_number": "",
       "delivery": "14, Residency Road, Shivajinagar, Bangalore - 560025",
-      "created_at": "2025-04-30T20:00:00Z",
-      "updated_at": "2025-04-30T20:00:00Z"
+      "created_at": "2026-10-29T20:00:00Z",
+      "updated_at": "2026-10-29T20:00:00Z"
     }
   },
   {
@@ -267,14 +267,14 @@
     "fields": {
       "user": 3,
       "product": 6,
-      "product_name": "CoolBreeze 2 Ton 5 Star Inverter Cassette AC",
-      "amount": "68999.00",
+      "product_name": "JumpMax Basketball",
+      "amount": "1599.00",
       "status": "dispatched",
       "carrier": "Ekart",
       "tracking_number": "EK556612309",
       "delivery": "7, Linking Road, Bandra West, Mumbai - 400050",
-      "created_at": "2025-04-27T11:00:00Z",
-      "updated_at": "2025-04-27T11:00:00Z"
+      "created_at": "2026-10-26T11:00:00Z",
+      "updated_at": "2026-10-26T11:00:00Z"
     }
   },
   {
@@ -283,14 +283,14 @@
     "fields": {
       "user": 3,
       "product": 4,
-      "product_name": "CoolBreeze 2 Ton 3 Star Split AC",
-      "amount": "45999.00",
+      "product_name": "ActiveFit Sports Jersey",
+      "amount": "899.00",
       "status": "delivered",
       "carrier": "BlueDart",
       "tracking_number": "BD77412390",
       "delivery": "7, Linking Road, Bandra West, Mumbai - 400050",
-      "created_at": "2025-03-01T08:30:00Z",
-      "updated_at": "2025-03-01T08:30:00Z"
+      "created_at": "2026-08-30T08:30:00Z",
+      "updated_at": "2026-08-30T08:30:00Z"
     }
   },
   {
@@ -299,14 +299,14 @@
     "fields": {
       "user": 4,
       "product": 1,
-      "product_name": "CoolBreeze 1 Ton 3 Star Window AC",
-      "amount": "28999.00",
+      "product_name": "ProRun Lightweight Running Shoes",
+      "amount": "2499.00",
       "status": "delivered",
       "carrier": "Delhivery",
       "tracking_number": "DL33219876",
       "delivery": "23, Anna Salai, Teynampet, Chennai - 600018",
-      "created_at": "2025-03-15T13:20:00Z",
-      "updated_at": "2025-03-15T13:20:00Z"
+      "created_at": "2026-09-13T13:20:00Z",
+      "updated_at": "2026-09-13T13:20:00Z"
     }
   },
   {
@@ -315,14 +315,14 @@
     "fields": {
       "user": 4,
       "product": 8,
-      "product_name": "CoolBreeze 2 Ton Tower AC",
-      "amount": "55999.00",
+      "product_name": "FitStrong Adjustable Dumbbell Set",
+      "amount": "3499.00",
       "status": "dispatched",
       "carrier": "BlueDart",
       "tracking_number": "BD10293847",
       "delivery": "23, Anna Salai, Teynampet, Chennai - 600018",
-      "created_at": "2025-04-25T17:10:00Z",
-      "updated_at": "2025-04-25T17:10:00Z"
+      "created_at": "2026-10-24T17:10:00Z",
+      "updated_at": "2026-10-24T17:10:00Z"
     }
   },
   {
@@ -331,14 +331,14 @@
     "fields": {
       "user": 3,
       "product": 7,
-      "product_name": "CoolBreeze 1.5 Ton Portable AC",
-      "amount": "32999.00",
+      "product_name": "CourtPro Volleyball",
+      "amount": "999.00",
       "status": "pending",
       "carrier": "",
       "tracking_number": "",
       "delivery": "7, Linking Road, Bandra West, Mumbai - 400050",
-      "created_at": "2025-05-01T10:00:00Z",
-      "updated_at": "2025-05-01T10:00:00Z"
+      "created_at": "2026-10-30T10:00:00Z",
+      "updated_at": "2026-10-30T10:00:00Z"
     }
   },
   {
@@ -347,9 +347,9 @@
     "fields": {
       "order": 3,
       "user": 2,
-      "reason": "Stabilizer stopped working after 3 days. AC not turning on.",
+      "reason": "The sports socks started tearing after only a few days of use.",
       "status": "approved",
-      "created_at": "2025-02-20T10:00:00Z"
+      "created_at": "2026-08-21T10:00:00Z"
     }
   },
   {
@@ -358,9 +358,9 @@
     "fields": {
       "order": 2,
       "user": 2,
-      "reason": "AC is making loud noise during operation. Not acceptable.",
+      "reason": "The football loses air quickly and does not maintain proper pressure.",
       "status": "denied",
-      "created_at": "2025-03-20T14:30:00Z"
+      "created_at": "2026-09-18T14:30:00Z"
     }
   },
   {
@@ -369,9 +369,9 @@
     "fields": {
       "order": 7,
       "user": 3,
-      "reason": "AC not cooling properly even after installation by technician.",
+      "reason": "The sports jersey stitching came loose after the first wash.",
       "status": "approved",
-      "created_at": "2025-03-10T09:00:00Z"
+      "created_at": "2026-09-08T09:00:00Z"
     }
   },
   {
@@ -380,9 +380,9 @@
     "fields": {
       "order": 8,
       "user": 4,
-      "reason": "Window AC leaking water inside the room.",
+      "reason": "The running shoes have a damaged sole and are uncomfortable to wear.",
       "status": "pending",
-      "created_at": "2025-03-25T16:00:00Z"
+      "created_at": "2026-09-23T16:00:00Z"
     }
   },
   {
@@ -391,9 +391,9 @@
     "fields": {
       "order": 1,
       "user": 2,
-      "reason": "AC dispatched 5 days ago but not delivered yet. Want refund.",
+      "reason": "The cricket bat has not arrived even though the order was dispatched several days ago. I would like a refund.",
       "status": "pending",
-      "created_at": "2025-04-30T11:00:00Z"
+      "created_at": "2026-10-29T11:00:00Z"
     }
   }
 ]
