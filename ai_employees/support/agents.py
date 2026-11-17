@@ -13,7 +13,7 @@ antropic_model=settings.GEMINI_MODEL
 
 SUPPORT_SYSTEM_PROMPT="""
 You are Vikram,a customer support agent at Sports Hub.
-You help Customers with issues realated to their AC order
+You help Customers with issues realated to our sports items
 
 Your resposnsibilities:
 -Always use your tools to gather facts before responding
@@ -56,6 +56,8 @@ Important rules:
 - Escalate uncertain fraud cases to the risk team.
 - Give a clear, specific reason for every decision.
 - Be fair, firm, concise, and professional.
+- Never use bold text,bullet points or nay markdown formatting. plain text only
+- keep replaies concise and conversational,max 3-4 sentences .No long paragrphs
 
 Response format:
 Decision: [APPROVE_REFUND / DENY_REFUND / ESCALATE_TO_RISK]
@@ -156,7 +158,6 @@ SUPPORT_TOOLS=[
     }
 
 ]
-
 MANAGER_TOOLS = [
     {
         "name": "assess_fraud_risk",
@@ -191,27 +192,38 @@ RISK_TOOLS = [
     }
 ]
 
+# execute_tool --> Bridge between Gemini and Python functions (tools)
 
-#execute_tool-->Bridge between Gemini and python functions(tools)
+def execute_tool(tool_name, tool_input, conversation_id=None):
 
-def execute_tool(tool_name,tool_input):
-    if tool_name=="get_order_details":
+    if tool_name == "get_order_details":
         return get_order_details(tool_input["order_id"])
-    if tool_name=="get_refund_history":
+
+    if tool_name == "get_refund_history":
         return get_refund_history(tool_input["user_id"])
-    if tool_name=="check_delivery_status":
-        return check_delivery_status(tool_input["tracking_number"],tool_input["carrier"])
-    if tool_name =="escalate_to_manager":
-        case_summary=tool_input["case_summary"]
-        decision=run_manager_agent(case_summary)
+
+    if tool_name == "check_delivery_status":
+        return check_delivery_status(
+            tool_input["tracking_number"],
+            tool_input["carrier"]
+        )
+
+    if tool_name == "escalate_to_manager":
+        case_summary = tool_input["case_summary"]
+
+        decision = run_manager_agent(case_summary, conversation_id)
         return decision
-    if tool_name=='assess_fraud_risk':
-        user_id=tool_input['user_id']
-        print("Consulating risk agent for user==>",user_id)
-        verdict=run_risk_agent(user_id)
-        print("risk verdict==>",verdict)
+
+    if tool_name == 'assess_fraud_risk':
+        user_id = tool_input['user_id']
+
+        print("Consulting risk agent for user==>", user_id)
+
+        verdict = run_risk_agent(user_id, conversation_id)
+        print("risk verdict==>", verdict, conversation_id)
         return verdict
-    if tool_name==' get_customer_risk_profile':
+
+    if tool_name == ' get_customer_risk_profile':
         return get_customer_risk_profile(tool_input['user_id'])
 
         
@@ -243,12 +255,12 @@ def run_support_agent(user_message, conversation_id, order_id, user_id):
                 f"\nOrder ID: {order_id}, User ID: {user_id}"
             ),
             tools=SUPPORT_TOOLS,
-            messages=conversation_messages,
+            messages=conversation_messages, 
         )
 
         # Check whether the AI wants to use a tool
         if response.stop_reason == "tool_use":
-
+           
             # Keep the original tool call
             conversation_messages.append({
                 "role": "assistant",
@@ -260,11 +272,13 @@ def run_support_agent(user_message, conversation_id, order_id, user_id):
             # Run the requested tool
             for block in response.content:
                 if block.type == "tool_use":
-                    result = execute_tool(block.name, block.input)
+                    #log tool call
+                    AgentLog.objects.create(conversation=conv, event_type="tool_call",message=f"Calling tool{block.name} with {block.input}")          
+                    # log tool result
+                    result = execute_tool(block.name, block.input,conversation_id)
+                    AgentLog.objects.create(conversation=conv, event_type="tool_result",message=f"Calling tool{block.name} returned:{str(result)[:200]}")
 
                     #store data
-
-
                     tool_results.append({
                         "type": "tool_result",
                         "tool_use_id": block.id,
@@ -278,12 +292,16 @@ def run_support_agent(user_message, conversation_id, order_id, user_id):
             })
 
         else:
+            #log final replay
+            AgentLog.objects.create(conversation=conv,event_type="final",message=response.content[0].text)
             return response.content[0].text
 
 
 #create the manager agent
 
-def run_manager_agent(case_summary):
+def run_manager_agent(case_summary,conversation_id):
+    conv=Conversation.objects.get(id=conversation_id)
+    AgentLog.objects.create(conversation=conv,event_type="manager",message=f"case recived for review:{case_summary[:200]}")
     manager_messages=[
         {'role':"user","content":case_summary}#user is task give in this case user is our agent vikram
 
@@ -295,14 +313,15 @@ def run_manager_agent(case_summary):
             system=MANAGER_SYSTEM_PROMPT,
             tools=MANAGER_TOOLS,
             messages=manager_messages,
-             
-
         )
         if response.stop_reason=='tool_use':
             tool_result=[]
             for i in response.content:
                 if i.type=='tool_use':
-                    result=execute_tool(i.name,i.input)
+                    #consulting risk agent
+                    AgentLog.objects.create(conversation=conv,event_type="manager",message="Consulting risk agent for fraud assessment")
+                    result = execute_tool(i.name, i.input, conversation_id)
+                    
 
                     tool_result.append({
                         "type": "tool_result",
@@ -318,11 +337,17 @@ def run_manager_agent(case_summary):
             manager_messages.append({
                 "role":"user",
                 "content":tool_result
-            })   
-        else:
-            return response.content[0].text
+            }) 
 
-def run_risk_agent(user_id):
+        else:
+            decision=response.content[0].text
+            AgentLog.objects.create(conversation=conv,event_type="manager",message=f"{decision[:200]}")
+            return decision
+
+def run_risk_agent(user_id,conversation_id):
+    conv=Conversation.objects.get(id=conversation_id)
+    #log assesment started
+    AgentLog.objects.create(conversation=conv,event_type="risk",message=f"starting fraud assesment for user{user_id}")
     risk_messages=[
         {"role":"user","content":f"please assess the fraud risk for user ID {user_id}.User your tool to get their profile"}
     ]  
@@ -341,9 +366,10 @@ def run_risk_agent(user_id):
             tool_result=[]
             for block in response.content:
                 if block.type == "tool_use":
+                    AgentLog.objects.create(conversation=conv,event_type="risk",message=f"Calling {block.name} to get customer risk profile")
                     print("risk tool call ==>",block.name) #means tool name
                     print("risk tool input ===>",block.input) 
-                    result = execute_tool(block.name,block.input)#execute tool take this
+                    result = execute_tool(block.name,block.input,conversation_id)#execute tool take this
                     print('risk tool result==>',result)
                     tool_result.append({
                         "type":"tool_result",
@@ -360,7 +386,9 @@ def run_risk_agent(user_id):
                     "content":tool_result
         }) 
         else:
-            return response.content[0].text             
+            Verdict=response.content[0].text  
+            AgentLog.objects.create(conversation=conv,event_type="risk",message=f"Verdict:{Verdict[:200]}")
+            return   Verdict          
 
                
 

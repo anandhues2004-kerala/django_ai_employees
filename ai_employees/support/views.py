@@ -5,6 +5,9 @@ from .models import Conversation,Message
 from orders.models import Order
 from django.shortcuts import get_object_or_404
 from support.agents import run_support_agent
+from django.shortcuts import render
+from django.contrib.admin.views.decorators import staff_member_required
+
 
 
 def chat(request, order_id):
@@ -32,4 +35,22 @@ def chat(request, order_id):
             "reply": reply
         })
 
+@staff_member_required
+def dashboard(request):
+    conversation=Conversation.objects.all().order_by("-created_at")
+    context={
+        "conversation":conversation
+    }
+    return render(request,"dashboard.html",context)
 
+
+def conversation_detailview(request,conversation_id):
+    conversation=get_object_or_404(Conversation,id=conversation_id)
+    messages=conversation.messages.order_by("created_at")
+    agentlogs=conversation.agentlogs.order_by("created_at")
+    context={
+        "converstaion":conversation,
+        "messages":messages,
+        "agentlogs":agentlogs
+    }
+    return render(request,"conv_detailview.html",context)

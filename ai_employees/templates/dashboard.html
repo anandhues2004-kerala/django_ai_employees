@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CoolBreeze Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand:  { DEFAULT: '#0284c7', dark: '#0369a1' },
+            accent: { DEFAULT: '#0ea5e9', dark: '#0284c7' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-sky-50 text-slate-800 antialiased">
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-60 shrink-0 bg-brand text-white flex flex-col p-4 sticky top-0 h-screen">
+      <span class="text-sm font-bold tracking-wide px-3 py-2">Sports</span>
+      <hr class="border-white/30 my-3"/>
+
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-white text-brand-dark text-sm font-semibold shadow-sm">
+          <span>💬</span>
+          <span>Conversations</span>
+        </a>
+      </nav>
+
+      <hr class="border-white/30 my-3"/>
+      <span class="px-3 text-[11px] text-white/80">Logged in as admin</span>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0 p-8">
+
+      <h1 class="text-xl font-bold text-sky-900 mb-6">Conversations</h1>
+
+      <div class="bg-white rounded-xl shadow-sm border border-sky-100 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="bg-sky-50 border-b border-sky-100">
+              <tr class="text-xs uppercase tracking-wider text-sky-700">
+                <th class="px-6 py-3 font-semibold">Customer</th>
+                <th class="px-6 py-3 font-semibold">Order</th>
+                <th class="px-6 py-3 font-semibold">Product</th>
+                <th class="px-6 py-3 font-semibold">Manager Involved</th>
+                <th class="px-6 py-3 font-semibold">Risk Assessed</th>
+                <th class="px-6 py-3 font-semibold">Status</th>
+                <th class="px-6 py-3 font-semibold">Date</th>
+                <th class="px-6 py-3 font-semibold text-right">Action</th>
+              </tr>
+            </thead>
+
+            <tbody class="text-[13px] divide-y divide-sky-100">
+              {% for conv in conversation %}
+              <tr class="hover:bg-sky-50 transition-colors">
+                <td class="px-6 py-4 font-medium whitespace-nowrap">
+                  {{ conv.user.first_name }} {{ conv.user.last_name }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">Order #{{ conv.order.id }}</td>
+                <td class="px-6 py-4">{{ conv.order.product_name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {% if conv.manager_involved %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-700">Yes</span>
+                  {% else %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">No</span>
+                  {% endif %}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {% if conv.risk_assessed %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-700">Yes</span>
+                  {% else %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">No</span>
+                  {% endif %}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {% if conv.order.status == "Dispatched" %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">{{ conv.order.status }}</span>
+                  {% elif conv.order.status == "Pending" %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">{{ conv.order.status }}</span>
+                  {% elif conv.order.status == "Delivered" %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">{{ conv.order.status }}</span>
+                  {% else %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">{{ conv.order.status }}</span>
+                  {% endif %}
+                </td>
+                <td class="px-6 py-4 text-slate-500 whitespace-nowrap">
+                  {{ conv.created_at|date:"d M Y" }}
+                </td>
+                <td class="px-6 py-4 text-right">
+                  <a href="{% url 'conversation_detailview' conv.id %}" class="inline-block px-3 py-1.5 text-xs font-medium rounded-lg border border-accent text-brand hover:bg-accent hover:text-white transition-colors">View</a>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="8" class="px-6 py-10 text-center text-slate-400">No conversations yet.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>

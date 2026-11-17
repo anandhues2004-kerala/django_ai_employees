@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Conversation #{{ converstaion.id }} — CoolBreeze Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand:  { DEFAULT: '#0284c7', dark: '#0369a1' },
+            accent: { DEFAULT: '#0ea5e9', dark: '#0284c7' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* slim scrollbars for the two scroll boxes */
+    .scroll-slim::-webkit-scrollbar { width: 6px; }
+    .scroll-slim::-webkit-scrollbar-thumb { background: #bae6fd; border-radius: 9999px; }
+    .scroll-slim::-webkit-scrollbar-track { background: transparent; }
+  </style>
+</head>
+<body class="bg-sky-50 text-slate-800 antialiased">
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-60 shrink-0 bg-brand text-white flex flex-col p-4 sticky top-0 h-screen">
+      <span class="text-sm font-bold tracking-wide px-3 py-2"> Sports HUB</span>
+      <hr class="border-white/30 my-3"/>
+
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="{% url 'dashboard' %}" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-white text-brand-dark text-sm font-semibold shadow-sm">
+          <span>💬</span>
+          <span>Conversations</span>
+        </a>
+      </nav>
+
+      <hr class="border-white/30 my-3"/>
+      <span class="px-3 text-[11px] text-white/80">Logged in as admin</span>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0 p-8 flex flex-col h-screen">
+
+      <!-- Header -->
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mb-6 shrink-0">
+        <a href="{% url 'dashboard' %}" class="text-sm text-sky-700 hover:text-brand-dark transition-colors">← Back</a>
+        <h1 class="text-xl font-bold text-sky-900">Conversation #{{ converstaion.id }}</h1>
+        <span class="text-[13px] text-slate-500">
+          {{ converstaion.user.first_name }} · Order #{{ converstaion.order.id }} · {{ converstaion.order.product_name }}
+        </span>
+      </div>
+
+      <!-- Two separate scrollable boxes -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-0">
+
+        <!-- Left: Chat Transcript -->
+        <section class="bg-white rounded-xl shadow-sm border border-sky-100 flex flex-col min-h-0 overflow-hidden">
+          <header class="shrink-0 px-5 py-3 bg-sky-50 border-b border-sky-100 text-sm font-semibold text-sky-900">
+            Chat Transcript
+          </header>
+
+          <div class="flex-1 overflow-y-auto scroll-slim p-5 flex flex-col gap-4">
+            {% for msg in messages %}
+              {% if msg.role == "user" %}
+              <!-- Customer message -->
+              <div class="flex flex-col items-start">
+                <span class="text-[11px] text-slate-400 mb-1">{{ converstaion.user.first_name }}</span>
+                <div class="max-w-[85%] rounded-2xl rounded-tl-sm bg-slate-100 text-slate-800 px-4 py-2 text-[13px] leading-relaxed">
+                  {{ msg.content }}
+                </div>
+              </div>
+              {% else %}
+              <!-- Agent message -->
+              <div class="flex flex-col items-end">
+                <span class="text-[11px] text-slate-400 mb-1">Vikram (AI Agent)</span>
+                <div class="max-w-[85%] rounded-2xl rounded-tr-sm bg-brand text-white px-4 py-2 text-[13px] leading-relaxed">
+                  {{ msg.content }}
+                </div>
+              </div>
+              {% endif %}
+            {% empty %}
+              <p class="text-center text-slate-400 text-sm py-10">No messages yet.</p>
+            {% endfor %}
+          </div>
+        </section>
+
+        <!-- Right: Agent Activity -->
+        <section class="bg-white rounded-xl shadow-sm border border-sky-100 flex flex-col min-h-0 overflow-hidden">
+          <header class="shrink-0 px-5 py-3 bg-sky-50 border-b border-sky-100 flex items-center gap-2 text-sm font-semibold text-sky-900">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Agent Activity
+          </header>
+
+          <div class="flex-1 overflow-y-auto scroll-slim p-5 flex flex-col gap-3">
+            {% for logs in agentlogs %}
+            <div class="rounded-lg border-l-4 px-4 py-3
+              {% if logs.event_type == 'tool_call' %}border-violet-500 bg-violet-50
+              {% elif logs.event_type == 'tool_result' %}border-emerald-500 bg-emerald-50
+              {% elif logs.event_type == 'manager' %}border-amber-500 bg-amber-50
+              {% elif logs.event_type == 'risk' %}border-rose-500 bg-rose-50
+              {% else %}border-sky-500 bg-sky-50{% endif %}">
+
+              <div class="flex items-center justify-between gap-2 mb-1">
+                {% if logs.event_type == "tool_call" %}
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-violet-100 text-violet-700">tool_call</span>
+                {% elif logs.event_type == "tool_result" %}
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">tool_result</span>
+                {% elif logs.event_type == "manager" %}
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-700">manager</span>
+                {% elif logs.event_type == "risk" %}
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-700">risk</span>
+                {% else %}
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-sky-100 text-sky-700">final</span>
+                {% endif %}
+                <span class="text-[11px] text-slate-400">{{ logs.created_at }}</span>
+              </div>
+
+              <p class="text-[12px] text-slate-600 leading-relaxed break-words">{{ logs.message }}</p>
+            </div>
+            {% empty %}
+              <p class="text-center text-slate-400 text-sm py-10">No agent activity yet.</p>
+            {% endfor %}
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
